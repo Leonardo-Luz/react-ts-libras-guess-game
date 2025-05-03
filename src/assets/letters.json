@@ -1,106 +1,110 @@
 [
   {
-    "word": "A",
-    "imgPath": "public/A.png"
+    "letter": "A",
+    "imgPath": "A.png"
   },
   {
-    "word": "B",
-    "imgPath": "public/B.png"
+    "letter": "B",
+    "imgPath": "B.png"
   },
   {
-    "word": "C",
-    "imgPath": "public/C.png"
+    "letter": "C",
+    "imgPath": "C.png"
   },
   {
-    "word": "D",
-    "imgPath": "public/D.png"
+    "letter": "Ç",
+    "imgPath": "Ç.png"
   },
   {
-    "word": "E",
-    "imgPath": "public/E.png"
+    "letter": "D",
+    "imgPath": "D.png"
   },
   {
-    "word": "F",
-    "imgPath": "public/F.png"
+    "letter": "E",
+    "imgPath": "E.png"
   },
   {
-    "word": "G",
-    "imgPath": "public/G.png"
+    "letter": "F",
+    "imgPath": "F.png"
   },
   {
-    "word": "H",
-    "imgPath": "public/H.png"
+    "letter": "G",
+    "imgPath": "G.png"
   },
   {
-    "word": "I",
-    "imgPath": "public/I.png"
+    "letter": "H",
+    "imgPath": "H.png"
   },
   {
-    "word": "J",
-    "imgPath": "public/J.png"
+    "letter": "I",
+    "imgPath": "I.png"
   },
   {
-    "word": "K",
-    "imgPath": "public/K.png"
+    "letter": "J",
+    "imgPath": "J.png"
   },
   {
-    "word": "L",
-    "imgPath": "public/L.png"
+    "letter": "K",
+    "imgPath": "K.png"
   },
   {
-    "word": "M",
-    "imgPath": "public/M.png"
+    "letter": "L",
+    "imgPath": "L.png"
   },
   {
-    "word": "N",
-    "imgPath": "public/N.png"
+    "letter": "M",
+    "imgPath": "M.png"
   },
   {
-    "word": "O",
-    "imgPath": "public/O.png"
+    "letter": "N",
+    "imgPath": "N.png"
   },
   {
-    "word": "P",
-    "imgPath": "public/P.png"
+    "letter": "O",
+    "imgPath": "O.png"
   },
   {
-    "word": "Q",
-    "imgPath": "public/Q.png"
+    "letter": "P",
+    "imgPath": "P.png"
   },
   {
-    "word": "R",
-    "imgPath": "public/R.png"
+    "letter": "Q",
+    "imgPath": "Q.png"
   },
   {
-    "word": "S",
-    "imgPath": "public/S.png"
+    "letter": "R",
+    "imgPath": "R.png"
   },
   {
-    "word": "T",
-    "imgPath": "public/T.png"
+    "letter": "S",
+    "imgPath": "S.png"
   },
   {
-    "word": "U",
-    "imgPath": "public/U.png"
+    "letter": "T",
+    "imgPath": "T.png"
   },
   {
-    "word": "V",
-    "imgPath": "public/V.png"
+    "letter": "U",
+    "imgPath": "U.png"
   },
   {
-    "word": "W",
-    "imgPath": "public/W.png"
+    "letter": "V",
+    "imgPath": "V.png"
   },
   {
-    "word": "X",
-    "imgPath": "public/X.png"
+    "letter": "W",
+    "imgPath": "W.png"
   },
   {
-    "word": "Y",
-    "imgPath": "public/Y.png"
+    "letter": "X",
+    "imgPath": "X.png"
   },
   {
-    "word": "Z",
-    "imgPath": "public/Z.png"
+    "letter": "Y",
+    "imgPath": "Y.png"
+  },
+  {
+    "letter": "Z",
+    "imgPath": "Z.png"
   }
 ]

@@ -62,11 +62,11 @@ export const Home = () => {
       onKeyDown={TypeHandler} tabIndex={0}
       className="flex flex-col w-full h-full gap-4 align-top justify-top p-12"
     >
-      {/* <div className="flex flex-row gap-3 self-center"> */}
-      {/*   { */}
-      {/*     target.split("").map((letter, index) => <Tile key={index} letter={letter} />) */}
-      {/*   } */}
-      {/* </div> */}
+      <div className="flex flex-row gap-3 self-center">
+        {
+          target.split("").map((letter, index) => <Tile key={index} letter={letter} img={`${letter}.png`} />)
+        }
+      </div>
       <div className="flex flex-col gap-3 self-center">
         {
           tries.map(triedWord => {
