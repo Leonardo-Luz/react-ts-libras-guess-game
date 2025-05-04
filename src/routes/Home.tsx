@@ -28,7 +28,7 @@ export const Home = () => {
       })
     }
 
-    else if (/^[A-Za-z]$/.test(key) && word.length < target.length) {
+    else if (/^[A-Za-zÇç]$/.test(key) && word.length < target.length) {
       setWord(prev => prev + key.toUpperCase())
     }
   }
