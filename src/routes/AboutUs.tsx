@@ -6,9 +6,12 @@ export const AboutUs = () => {
         <hr className="w-[70vw] border-amber-500 border-2" />
       </div>
       <p className="w-[70vw] self-center text-justify text-1xl">
-        Website desenvolvido por <strong className="text-amber-800">Leonardo Luz</strong> & <strong className="text-amber-800">Diego Prestes</strong> durante a cadeira de Libras no <em>Instituo Federal do Rio Grande do Sul - campus Osório</em>
+        Website desenvolvido por <strong className="text-amber-600">Leonardo Luz</strong> & <strong className="text-amber-600">Diego Prestes</strong> durante o curso de Análise e Desenvolvimento de Sistemas no <em>Instituo Federal do Rio Grande do Sul - campus Osório</em>
       </p>
       <hr className="w-[70vw] border-dashed border-amber-500 border-2 self-center" />
+      <p className="w-[70vw] self-center text-justify text-1xl">
+        Este projeto é um jogo interativo desenvolvido como parte da disciplina de Libras, com o objetivo de auxiliar no aprendizado do alfabeto manual da Língua Brasileira de Sinais (Libras).
+      </p>
     </div>
   )
 }
