@@ -1,16 +1,18 @@
 import { Outlet } from "react-router-dom"
-import { Navbar } from "./components/Navbar"
-import { Footer } from "./components/Footer"
+import { Header } from "./components/layout/Header"
+import { Footer } from "./components/layout/Footer"
+import { Toaster } from "./components/ui/sonner"
 
 function App() {
 
   return (
-    <div className="flex flex-col w-[100vw] h-[100vh] align-middle justify-between">
-      <Navbar />
-
-      <Outlet />
-
+    <div className="flex flex-col justify-between h-screen px-2">
+      <Header />
+			<div className=" flex-1 mx-auto container max-w-(--breakpoint-xl)">
+      	<Outlet />
+			</div>
       <Footer />
+			<Toaster />
     </div>
   )
 }

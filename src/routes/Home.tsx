@@ -1,207 +1,162 @@
-import { useEffect, useRef, useState } from "react"
-import { Tile } from "../components/Tile";
-import { Modal } from "../components/Modal";
-import words from "../assets/words.json"
+	import { useEffect, useRef, useState } from "react"
+	import { Tile } from "../components/GuessGame/Tile";
+	import words from "../assets/words.json"
+	import HowToPlayDialog from "@/components/HowToPlayDialog";
+	import { Button } from "@/components/ui/button";
+	import { toast } from "sonner";
+	import LossDialog from "@/components/LossDialog";
+import TileSkeleton from "@/components/GuessGame/TileSkeleton";
+import TileRow from "@/components/GuessGame/TileRow";
+import ImageTile from "@/components/GuessGame/ImageTile";
 
-export const Home = () => {
-  const QTY_TRIES = 3;
+	export const Home = () => {
+		const QTY_TRIES = 3;
 
-  const [word, setWord] = useState<string>("");
-  const [target, setTarget] = useState<string>("SALVE");
-  const [tries, setTries] = useState<string[]>([]);
-  const [win, setWin] = useState<boolean>(false);
-  const [rules, setRules] = useState<boolean>(false);
-  const [streak, setStreak] = useState<number>(0);
-  const [highscore, setHighscore] = useState<number>(0);
-  const inputRef = useRef<HTMLDivElement>(null);
+		const [word, setWord] = useState<string>("");
+		const [target, setTarget] = useState<string>("SALVE");
+		const [tries, setTries] = useState<string[]>([]);
+		const [win, setWin] = useState<boolean>(false);
+		const [streak, setStreak] = useState<number>(0);
+		const [highscore, setHighscore] = useState<number>(0);
+		const inputRef = useRef<HTMLDivElement>(null);
 
-  const TypeHandler = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    const key = event.key
+		const [showLossDialog, setShowLossDialog] = useState<boolean>(false)
 
-    if (win || tries.length == QTY_TRIES) return
-    if (key == "Backspace" && word.length > 0) setWord(prev => prev.slice(0, prev.length - 1))
-    else if (key == "Enter" && word.length == target.length && tries.length < QTY_TRIES) {
-      setWord("")
-      if (word == target) {
-        return ContinueHandler()
-      }
-      setTries(prev => {
-        return [...prev, word]
-      })
-    }
+		const TypeHandler = (event: React.KeyboardEvent<HTMLDivElement>) => {
+			const key = event.key
 
-    else if (/^[A-Za-zÇç]$/.test(key) && word.length < target.length) {
-      setWord(prev => prev + key.toUpperCase())
-    }
-  }
+			if (win || tries.length == QTY_TRIES) return
+			if (key == "Backspace" && word.length > 0) setWord(prev => prev.slice(0, prev.length - 1))
+			else if (key == "Enter" && word.length == target.length && tries.length < QTY_TRIES) {
+				setWord("")
+				
+				setTries(prev => {
+					return [...prev, word]
+				})
+				
+				if (word == target) {
+					toast.success(`Você acertou! A palavra era ${target}.`)
+					setTimeout(() => {
+						ContinueHandler()
+					}, 1000) 
+					return 
+				}
 
-  function reset() {
-    setWord("");
-    const index = Math.floor(Math.random() * words.length)
-    setTarget(words[index])
-    setTries([]);
-    setWin(false);
-  }
+				if(tries.length + 1 === QTY_TRIES) {
+					setTimeout(() => setShowLossDialog(true), 0)
+				}
+			}
 
-  function ContinueHandler(): void {
-    reset()
-    const index = Math.floor(Math.random() * words.length)
-    setTarget(words[index])
-    setStreak(prev => { return prev += 1 })
-  }
+			else if (/^[A-Za-zÇç]$/.test(key) && word.length < target.length) {
+				setWord(prev => prev + key.toUpperCase())
+			}
+		}
 
-  function ExitHandler(_: React.MouseEvent<HTMLInputElement, MouseEvent>): void {
-    reset()
-    setStreak(0)
-  }
+		function reset() {
+			setWord("");
+			const index = Math.floor(Math.random() * words.length)
+			setTarget(words[index])
+			setTries([]);
+			setWin(false);
+		}
 
-  useEffect(() => {
-    const index = Math.floor(Math.random() * words.length)
-    setTarget(words[index])
-  }, [])
+		function ContinueHandler(): void {
+			reset()
+			const index = Math.floor(Math.random() * words.length)
+			setTarget(words[index])
+			setStreak(prev => { return prev += 1 })
+		}
 
-  useEffect(() => {
-    inputRef?.current?.focus();
-  }, [target])
+		function ExitHandler(): void {
+			reset()
+			setStreak(0)
+		}
 
-  useEffect(() => {
-    if (streak > highscore)
-      setHighscore(streak)
-  }, [streak])
+		useEffect(() => {
+			const index = Math.floor(Math.random() * words.length)
+			setTarget(words[index])
+		}, [])
 
-  return (
-    target ?
-      <div
-        ref={inputRef}
-        onKeyDown={TypeHandler} tabIndex={0}
-        className="flex outline-0 flex-col w-full h-full gap-4 align-top justify-top p-12"
-      >
-        <div className="self-center flex flex-row justify-between p-4 w-[70%]">
-          <label
-            onClick={() => setRules(true)}
-            className="p-1 flex flex-row self-center gap-2 cursor-pointer"
-          >
-            <p className="self-center rounded-full pr-2 pb-0.5 pt-0.5 pl-2 text-center font-bold bg-amber-400 text-white">i</p>
-            <p className="self-center">Regras</p>
-          </label>
-          <div className="flex flex-row justify-between p-4 gap-20">
-            <p>Highscore: {highscore}</p>
-            <p>Streak: {streak}</p>
-          </div>
-        </div>
-        <div className="flex flex-row gap-3 self-center">
-          {
-            target.split("").map((letter, index) => <Tile key={index} letter={letter} img={`${letter}.png`} />)
-          }
-        </div>
-        <div className="flex flex-col gap-3 self-center">
-          {
-            tries.map(triedWord => {
-              return <div className="flex flex-row gap-3 self-center">
-                {
-                  triedWord.split("").map((letter, index) => {
-                    const corret = target.charAt(index) == letter
-                    const contains = target.includes(letter)
-                    const wrong = !corret && !contains
+		useEffect(() => {
+			inputRef?.current?.focus();
+		}, [target])
 
-                    return <Tile
-                      corret={corret}
-                      contains={contains}
-                      wrong={wrong}
-                      key={index} letter={letter} />
-                  })
-                }
-              </div>
-            })
-          }
-        </div>
-        <div className="flex flex-row gap-3 self-center">
-          {
-            word.split("").map((letter, index) => <Tile key={index} letter={letter} />)
-          }
-          {
-            target.substring(word.length).split("").map((_, index) => <Tile key={index} letter={""} />)
-          }
-        </div>
-        {
-          (!win && tries.length == QTY_TRIES) &&
-          <Modal>
-            <h1 className="self-center text-4xl text-white font-extrabold">Derrota!</h1>
-            <h1 className="self-center text-2xl text-white font-extrabold">A palavra era {target}</h1>
-            <hr className="border-white w-full self-center border-2" />
-            <div className="w-full flex flex-row justify-around align-middle">
-              <input onClick={ExitHandler} className="bg-white font-bold text-black p-3 rounded-md cursor-pointer shadow-black shadow-md hover:shadow-transparent" type="button" value="TENTAR NOVAMENTE" />
-            </div>
-          </Modal>
-        }
-        {
-          rules &&
-          <Modal>
-            <div className="flex flex-row justify-between">
-              <h1 className="self-center text-3xl text-white font-extrabold">Regras:</h1>
-              <input onClick={() => setRules(false)} className="font-bold text-white text-2xl cursor-pointer" type="button" value="Fechar" />
-            </div>
-            <hr className="border-white w-full self-center border-2" />
-            <h1 className="self-center text-2xl text-white">Palavra que você deve descobrir:</h1>
-            <div className="p-4 bg-white rounded-md inset-shadow-sm inset-shadow-black flex flex-row gap-3 self-center">
-              {
-                "EXEMPLO".split("").map((letter, index) => <Tile key={index} letter={letter} img={`${letter}.png`} />)
-              }
-            </div>
+		useEffect(() => {
+			if (streak > highscore)
+				setHighscore(streak)
+		}, [streak])
 
-            <h1 className="self-center text-2xl text-white">Tentativa de descobrir a palavra:</h1>
-            <div className="p-4 bg-white rounded-md inset-shadow-sm inset-shadow-black flex flex-row gap-3 self-center">
-              {
-                "AXAEAAO".split("").map((letter, index) => {
-                  return <Tile key={index}
-                    corret={index == 1 || index == 6}
-                    wrong={index != 1 && index != 6 && index != 3}
-                    contains={index == 3}
-                    letter={letter}
-                  />
-                })
-              }
-            </div>
-            <div className="p-4 bg-white rounded-md inset-shadow-sm inset-shadow-black flex flex-row gap-3 self-start">
-              {
-                "XO".split("").map((letter, index) => {
-                  return <Tile key={index}
-                    corret
-                    letter={letter}
-                  />
-                })
-              }
-              <h1 className="self-center text-xl text-black">Letras no local correto</h1>
-            </div>
-            <div className="p-4 bg-white rounded-md inset-shadow-sm inset-shadow-black flex flex-row gap-3 self-start">
-              {
-                "E".split("").map((letter, index) => {
-                  return <Tile key={index}
-                    contains
-                    letter={letter}
-                  />
-                })
-              }
-              <h1 className="self-center text-xl text-black">Letra na posição errada</h1>
-            </div>
-            <div className="p-4 bg-white rounded-md inset-shadow-sm inset-shadow-black flex flex-row gap-3 self-start">
-              {
-                "A".split("").map((letter, index) => {
-                  return <Tile key={index}
-                    wrong
-                    letter={letter}
-                  />
-                })
-              }
-              <h1 className="self-center text-xl text-black">Letra errada</h1>
-            </div>
-            <hr className="border-white mt-4 w-full self-center border-2" />
-            <div className="w-full flex flex-row justify-around align-middle">
-              <input onClick={() => setRules(false)} className="bg-white font-bold text-black p-3 rounded-md cursor-pointer shadow-black shadow-md hover:shadow-transparent" type="button" value="Fechar" />
-            </div>
-          </Modal>
-        }
-      </div> :
-      <div>loading</div>
-  )
-}
+		return (
+			<div
+				ref={inputRef}
+				onKeyDown={TypeHandler} tabIndex={0}
+				className="flex flex-col align-top justify-top w-full h-full gap-4 outline-0 "
+			>
+				<div className="flex justify-between items-center py-4 w-full">
+					<HowToPlayDialog>
+						<Button size="lg" variant="ghost" className="px-2">
+							<span className="inline-flex justify-center items-center rounded-full size-5.5 text-base font-bold bg-primary text-primary-foreground">i</span>
+							Como jogar?
+						</Button>
+					</HowToPlayDialog>
+					<div className="flex flex-row justify-between p-4 gap-4">
+						<p>Highscore: {highscore}</p>
+						<p>Streak: {streak}</p>
+					</div>
+				</div>
+				<div className=" flex flex-col items-center gap-2 w-full h-full">
+					{target && (
+						<>
+							<TileRow>
+								{target.split("").map((letter, index) => (
+									<ImageTile key={index} letter={letter} />
+								))}
+							</TileRow>
+							{
+								tries.map(triedWord => {
+									return <TileRow>
+										{
+											triedWord.split("").map((letter, index) => {
+												const corret = target.charAt(index) == letter
+												const contains = target.includes(letter)
+												const wrong = !corret && !contains
+
+												return <Tile
+													corret={corret}
+													contains={contains}
+													wrong={wrong}
+													key={index} 
+													letter={letter} 
+												/>
+											})
+										}
+									</TileRow>
+								})
+							}
+							<TileRow>
+								{
+									word.split("").map((letter, index) => <Tile key={index} letter={letter} />)
+								}
+								{
+									tries.length !== QTY_TRIES && target.substring(word.length).split("").map((_, index) => <Tile key={index} letter={""} />)
+								}
+							</TileRow>
+							{Array.from({length: QTY_TRIES - tries.length - 1}).map((_, i) => (
+								<div key={i} className=" flex justify-center gap-3 w-full">
+									{target.split("").map((_, j) => <TileSkeleton key={`${i}${j}`}/>)}
+								</div>
+							))}
+						</>
+					)}
+				</div>
+				<LossDialog 
+					words={[target]}
+					open={showLossDialog}
+					onOpenChange={(open) => {
+						setShowLossDialog(open)
+						if(!open) ExitHandler();
+					}}
+				/>
+			</div>
+		)
+	}
