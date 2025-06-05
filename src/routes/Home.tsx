@@ -8,6 +8,8 @@ import LossDialog from "@/components/LossDialog";
 import TileSkeleton from "@/components/GuessGame/TileSkeleton";
 import TileRow from "@/components/GuessGame/TileRow";
 import ImageTile from "@/components/GuessGame/ImageTile";
+import { DeleteIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export const Home = () => {
 	const QTY_TRIES = 3;
@@ -126,7 +128,7 @@ export const Home = () => {
 												contains={contains}
 												wrong={wrong}
 												key={index} 
-												letter={letter} 
+												letter={letter}
 											/>
 										})
 									}
@@ -134,12 +136,9 @@ export const Home = () => {
 							})
 						}
 						<TileRow>
-							{
-								word.split("").map((letter, index) => <Tile key={index} letter={letter} />)
-							}
-							{
-								tries.length !== QTY_TRIES && target.substring(word.length).split("").map((_, index) => <Tile key={index} letter={""} />)
-							}
+							{Array.from({ length: target.length }, (_, i) => word.split("")[i] ?? undefined).map((letter, index) => (
+								<Tile key={`${letter}${index}`} letter={letter} className={cn(index === word.length && "border-b-8")}/>
+							))}
 						</TileRow>
 						{Array.from({length: QTY_TRIES - tries.length - 1}).map((_, i) => (
 							<div key={i} className=" flex justify-center gap-3 w-full">
