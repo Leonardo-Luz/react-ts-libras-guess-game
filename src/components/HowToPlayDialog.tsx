@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import ImageTile from "./GuessGame/ImageTile"
+import ImageTile from "@/components/GuessGame/ImageTile"
 type HowToPlayDialogProps = {
 	children: React.ReactNode
 }
