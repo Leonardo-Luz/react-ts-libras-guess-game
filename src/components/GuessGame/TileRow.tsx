@@ -10,7 +10,7 @@ export default function TileRow({ className, children }: TileRowProps){
 	return (
 		<div 
 			className={cn(
-				"flex justify-center gap-1 w-full md:gap-1 lg:gap-3",
+				"flex justify-center gap-1 w-full md:gap-2 lg:gap-3",
 				className
 			)}
 		>

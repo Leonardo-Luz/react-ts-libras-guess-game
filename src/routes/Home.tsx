@@ -10,6 +10,7 @@ import TileRow from "@/components/GuessGame/TileRow";
 import ImageTile from "@/components/GuessGame/ImageTile";
 import { DeleteIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import KeyboardKey from "@/components/GuessGame/KeyboardKey";
 
 export const Home = () => {
 	const QTY_TRIES = 3;
@@ -30,27 +31,38 @@ export const Home = () => {
 		if (win || tries.length == QTY_TRIES) return
 		if (key == "Backspace" && word.length > 0) setWord(prev => prev.slice(0, prev.length - 1))
 		else if (key == "Enter" && word.length == target.length && tries.length < QTY_TRIES) {
-			setWord("")
-			
-			setTries(prev => {
-				return [...prev, word]
-			})
-			
-			if (word == target) {
-				toast.success(`Você acertou! A palavra era ${target}.`)
-				setTimeout(() => {
-					ContinueHandler()
-				}, 1000) 
-				return 
-			}
+			handleNewTry()
+		} else if (/^[A-Za-zÇç]$/.test(key) && word.length < target.length) {
+			addNewLetter(key)
+		}
+	}
 
-			if(tries.length + 1 === QTY_TRIES) {
-				setTimeout(() => setShowLossDialog(true), 0)
-			}
+	function addNewLetter(letter: string){
+		if(!/^[A-Za-zÇç]$/.test(letter) || word.length >= target.length) return
+		setWord(prev => prev + letter.toUpperCase())
+	}
+
+	function handleNewTry(){
+		if(word.length < target.length) {
+			toast("Palavra inválida! Letras faltando.")
+			return
 		}
 
-		else if (/^[A-Za-zÇç]$/.test(key) && word.length < target.length) {
-			setWord(prev => prev + key.toUpperCase())
+		setWord("")
+		setTries(prev => {
+			return [...prev, word]
+		})
+
+		if (word == target) {
+			toast.success(`Você acertou! A palavra era ${target}.`)
+			setTimeout(() => {
+				ContinueHandler()
+			}, 1000) 
+			return 
+		}
+
+		if(tries.length + 1 === QTY_TRIES) {
+			setTimeout(() => setShowLossDialog(true), 0)
 		}
 	}
 
@@ -141,12 +153,62 @@ export const Home = () => {
 							))}
 						</TileRow>
 						{Array.from({length: QTY_TRIES - tries.length - 1}).map((_, i) => (
-							<div key={i} className=" flex justify-center gap-3 w-full">
+							<TileRow key={i}>
 								{target.split("").map((_, j) => <TileSkeleton key={`${i}${j}`}/>)}
-							</div>
+							</TileRow>
 						))}
 					</>
 				)}
+			</div>
+			<div className="flex flex-col gap-1 mx-auto pb-20 max-w-[650px] w-full">
+				<div className="flex justify-center gap-1">
+					{["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"].map((letter) => (
+						<KeyboardKey 
+							key={`keyboard${letter}`}  
+							className="w-[8.4%]"
+							onClick={() => addNewLetter(letter)}
+						>
+							{letter}
+						</KeyboardKey>
+					))}
+				</div>
+				<div className="flex justify-center gap-1">
+					{["A", "S", "D", "F", "G", "H", "J", "K", "L", "Ç"].map((letter) => (
+						<KeyboardKey 
+							key={`keyboard${letter}`}  
+							className="w-[8.4%]"
+							onClick={() => addNewLetter(letter)}
+						>
+							{letter}
+						</KeyboardKey>
+					))}
+					<KeyboardKey
+						className="w-[8.4%]"
+						onClick={() => setWord(prev => {
+							if(prev === "") return ""
+							return prev.slice(0, -1)
+						})}
+					>
+						<DeleteIcon className="size-6" />
+					</KeyboardKey>
+				</div>
+				<div className="flex justify-center gap-1">
+					{["Z", "X", "C", "V", "B", "N", "M"].map((letter) => (
+						<KeyboardKey 
+							key={`keyboard${letter}`}  
+							className="w-[8.4%]"
+							onClick={() => addNewLetter(letter)}
+						>
+							{letter}
+						</KeyboardKey>
+					))}
+						<KeyboardKey
+							className=" w-[18%] h-full"
+							onClick={handleNewTry}
+						>
+							Enter
+						</KeyboardKey>
+				</div>
 			</div>
 			<LossDialog 
 				words={[target]}
