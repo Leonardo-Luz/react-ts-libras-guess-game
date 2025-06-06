@@ -41,7 +41,7 @@ export const Home = () => {
 	function addNewLetter(letter: string) {
 		if (!/^[A-Za-zÇç]$/.test(letter) || word.length >= target.length) return
 		setWord(prev => prev + letter.toUpperCase())
-	}	
+	}
 
 	function handleDifficultyChange() {
 		setDifficulty(prev => {
@@ -100,6 +100,8 @@ export const Home = () => {
 
 	useEffect(() => {
 		setTarget(getRandomWord(difficulty))
+
+		setDifficulty(localStorage.getItem("difficulty") as "easy" | "medium" | "hard" ?? "easy")
 	}, [])
 
 	useEffect(() => {
@@ -108,13 +110,15 @@ export const Home = () => {
 
 	useEffect(() => {
 		reset()
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		localStorage.setItem("difficulty", difficulty)
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [difficulty])
 
 	useEffect(() => {
 		if (streak > highscore)
 			setHighscore(streak)
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [streak])
 
 	return (
@@ -133,8 +137,8 @@ export const Home = () => {
 					</HowToPlayDialog>
 				</div>
 				<div className=" flex justify-center items-center flex-1">
-					<Button 
-						size="sm" 
+					<Button
+						size="sm"
 						variant="ghost"
 						onClick={handleDifficultyChange}
 						className={`
