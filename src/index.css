@@ -134,9 +134,9 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.98 0.016 73.684);
 
-	--correct: rgb(0, 201, 80);
+	--correct: rgb(11, 178, 77);
 	--correct-foreground: rgb(255, 255, 255);
-	--mispositioned: rgb(255, 223, 32);
+	--mispositioned: rgb(218, 191, 39);
 	--mispositioned-foreground: rgb(255, 255, 255);
 	--incorrect: rgb(251, 44, 54);
 	--incorrect-foreground: rgb(255, 255, 255);
