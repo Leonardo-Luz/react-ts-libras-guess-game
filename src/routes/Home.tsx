@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react"
 import { Tile } from "@/components/GuessGame/Tile";
-import words from "../assets/words.json"
 import HowToPlayDialog from "@/components/HowToPlayDialog";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -11,12 +10,14 @@ import ImageTile from "@/components/GuessGame/ImageTile";
 import { DeleteIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import KeyboardKey from "@/components/GuessGame/KeyboardKey";
+import getRandomWord from "@/utils/getRandomWord";
 
 export const Home = () => {
 	const QTY_TRIES = 3;
 
 	const [word, setWord] = useState<string>("");
 	const [target, setTarget] = useState<string>("SALVE");
+	const [difficulty, setDifficulty] = useState<"easy" | "medium" | "hard">("easy");
 	const [tries, setTries] = useState<string[]>([]);
 	const [win, setWin] = useState<boolean>(false);
 	const [streak, setStreak] = useState<number>(0);
@@ -37,13 +38,26 @@ export const Home = () => {
 		}
 	}
 
-	function addNewLetter(letter: string){
-		if(!/^[A-Za-zÇç]$/.test(letter) || word.length >= target.length) return
+	function addNewLetter(letter: string) {
+		if (!/^[A-Za-zÇç]$/.test(letter) || word.length >= target.length) return
 		setWord(prev => prev + letter.toUpperCase())
 	}
 
-	function handleNewTry(){
-		if(word.length < target.length) {
+	function handleDifficultyChange() {
+		setDifficulty(prev => {
+			switch (prev) {
+				case "easy":
+					return "medium"
+				case "medium":
+					return "hard"
+				case "hard":
+					return "easy"
+			}
+		})
+	}
+
+	function handleNewTry() {
+		if (word.length < target.length) {
 			toast("Palavra inválida! Letras faltando.")
 			return
 		}
@@ -57,27 +71,25 @@ export const Home = () => {
 			toast.success(`Você acertou! A palavra era ${target}.`)
 			setTimeout(() => {
 				ContinueHandler()
-			}, 1000) 
-			return 
+			}, 1000)
+			return
 		}
 
-		if(tries.length + 1 === QTY_TRIES) {
+		if (tries.length + 1 === QTY_TRIES) {
 			setTimeout(() => setShowLossDialog(true), 0)
 		}
 	}
 
 	function reset() {
 		setWord("");
-		const index = Math.floor(Math.random() * words.length)
-		setTarget(words[index])
+		setTarget(getRandomWord(difficulty))
 		setTries([]);
 		setWin(false);
 	}
 
 	function ContinueHandler(): void {
 		reset()
-		const index = Math.floor(Math.random() * words.length)
-		setTarget(words[index])
+		setTarget(getRandomWord(difficulty))
 		setStreak(prev => { return prev += 1 })
 	}
 
@@ -87,8 +99,7 @@ export const Home = () => {
 	}
 
 	useEffect(() => {
-		const index = Math.floor(Math.random() * words.length)
-		setTarget(words[index])
+		setTarget(getRandomWord(difficulty))
 	}, [])
 
 	useEffect(() => {
@@ -108,12 +119,22 @@ export const Home = () => {
 		>
 			<div className="flex justify-between items-center py-4 w-full">
 				<HowToPlayDialog>
-					<Button size="lg" variant="ghost" className="px-2">
+					<Button size="lg" variant="ghost" className="px-2 w-[20%]">
 						<span className="inline-flex justify-center items-center rounded-full size-5.5 text-base font-bold bg-primary text-primary-foreground">i</span>
 						Como jogar?
 					</Button>
 				</HowToPlayDialog>
-				<div className="flex flex-row justify-between p-4 gap-4">
+				<Button size="lg" variant="ghost"
+					onClick={handleDifficultyChange}
+					className={`font-bold px-1.5
+						${difficulty == "easy" && "bg-green-300"}
+						${difficulty == "medium" && "bg-yellow-300"}
+						${difficulty == "hard" && "bg-red-400 text-white"}`}
+				>
+					<p>DIFICULDADE:</p>
+					{difficulty.toUpperCase()}
+				</Button>
+				<div className="flex flex-row justify-between p-4 gap-4 w-[20%]">
 					<p>Highscore: {highscore}</p>
 					<p>Streak: {streak}</p>
 				</div>
@@ -139,7 +160,7 @@ export const Home = () => {
 												corret={corret}
 												contains={contains}
 												wrong={wrong}
-												key={index} 
+												key={index}
 												letter={letter}
 											/>
 										})
@@ -149,12 +170,12 @@ export const Home = () => {
 						}
 						<TileRow>
 							{Array.from({ length: target.length }, (_, i) => word.split("")[i] ?? undefined).map((letter, index) => (
-								<Tile key={`${letter}${index}`} letter={letter} className={cn(index === word.length && "border-b-8")}/>
+								<Tile key={`${letter}${index}`} letter={letter} className={cn(index === word.length && "border-b-8")} />
 							))}
 						</TileRow>
-						{Array.from({length: QTY_TRIES - tries.length - 1}).map((_, i) => (
+						{Array.from({ length: QTY_TRIES - tries.length - 1 }).map((_, i) => (
 							<TileRow key={i}>
-								{target.split("").map((_, j) => <TileSkeleton key={`${i}${j}`}/>)}
+								{target.split("").map((_, j) => <TileSkeleton key={`${i}${j}`} />)}
 							</TileRow>
 						))}
 					</>
@@ -163,8 +184,8 @@ export const Home = () => {
 			<div className="flex flex-col gap-1 mx-auto pb-20 max-w-[650px] w-full">
 				<div className="flex justify-center gap-1">
 					{["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"].map((letter) => (
-						<KeyboardKey 
-							key={`keyboard${letter}`}  
+						<KeyboardKey
+							key={`keyboard${letter}`}
 							className="w-[8.4%]"
 							onClick={() => addNewLetter(letter)}
 						>
@@ -174,8 +195,8 @@ export const Home = () => {
 				</div>
 				<div className="flex justify-center gap-1">
 					{["A", "S", "D", "F", "G", "H", "J", "K", "L", "Ç"].map((letter) => (
-						<KeyboardKey 
-							key={`keyboard${letter}`}  
+						<KeyboardKey
+							key={`keyboard${letter}`}
 							className="w-[8.4%]"
 							onClick={() => addNewLetter(letter)}
 						>
@@ -185,7 +206,7 @@ export const Home = () => {
 					<KeyboardKey
 						className="w-[8.4%]"
 						onClick={() => setWord(prev => {
-							if(prev === "") return ""
+							if (prev === "") return ""
 							return prev.slice(0, -1)
 						})}
 					>
@@ -194,28 +215,28 @@ export const Home = () => {
 				</div>
 				<div className="flex justify-center gap-1">
 					{["Z", "X", "C", "V", "B", "N", "M"].map((letter) => (
-						<KeyboardKey 
-							key={`keyboard${letter}`}  
+						<KeyboardKey
+							key={`keyboard${letter}`}
 							className="w-[8.4%]"
 							onClick={() => addNewLetter(letter)}
 						>
 							{letter}
 						</KeyboardKey>
 					))}
-						<KeyboardKey
-							className=" w-[18%] h-full"
-							onClick={handleNewTry}
-						>
-							Enter
-						</KeyboardKey>
+					<KeyboardKey
+						className=" w-[18%] h-full"
+						onClick={handleNewTry}
+					>
+						Enter
+					</KeyboardKey>
 				</div>
 			</div>
-			<LossDialog 
+			<LossDialog
 				words={[target]}
 				open={showLossDialog}
 				onOpenChange={(open) => {
 					setShowLossDialog(open)
-					if(!open) ExitHandler();
+					if (!open) ExitHandler();
 				}}
 			/>
 		</div>
