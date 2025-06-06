@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
-import { HelpCircleIcon } from "lucide-react"
+import { HelpCircleIcon, SunMoonIcon } from "lucide-react"
 import AboutDialog from "../AboutDialog"
 
 export const Header = () => {
@@ -19,6 +19,17 @@ export const Header = () => {
 					</Button>
 				</div>
 				<div className=" flex justify-end items-center gap-1 flex-1">
+					<Button
+						size="icon"
+						variant="ghost"
+						onClick={() => {
+							document.body.classList.toggle("dark")
+							const withDarkTheme = document.body.classList.contains("dark")
+							localStorage.setItem("theme", withDarkTheme ? "dark" : "light")
+						}}
+					>
+						<SunMoonIcon className="size-5" />
+					</Button>
 					<AboutDialog>
 						<Button
 							size="icon"
