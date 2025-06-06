@@ -41,7 +41,7 @@ export const Home = () => {
 	function addNewLetter(letter: string) {
 		if (!/^[A-Za-zÇç]$/.test(letter) || word.length >= target.length) return
 		setWord(prev => prev + letter.toUpperCase())
-	}
+	}	
 
 	function handleDifficultyChange() {
 		setDifficulty(prev => {
@@ -107,8 +107,14 @@ export const Home = () => {
 	}, [target])
 
 	useEffect(() => {
+		reset()
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [difficulty])
+
+	useEffect(() => {
 		if (streak > highscore)
 			setHighscore(streak)
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [streak])
 
 	return (
@@ -118,25 +124,34 @@ export const Home = () => {
 			className="flex flex-col align-top justify-top w-full h-full gap-4 outline-0 "
 		>
 			<div className="flex justify-between items-center py-4 w-full">
-				<HowToPlayDialog>
-					<Button size="lg" variant="ghost" className="px-2 w-[20%]">
-						<span className="inline-flex justify-center items-center rounded-full size-5.5 text-base font-bold bg-primary text-primary-foreground">i</span>
-						Como jogar?
+				<div className=" flex justify-start items-center flex-1">
+					<HowToPlayDialog>
+						<Button size="sm" variant="ghost" className="px-2">
+							<span className="inline-flex justify-center items-center rounded-full size-5.5 text-base font-bold bg-primary text-primary-foreground">i</span>
+							Como jogar?
+						</Button>
+					</HowToPlayDialog>
+				</div>
+				<div className=" flex justify-center items-center flex-1">
+					<Button 
+						size="sm" 
+						variant="ghost"
+						onClick={handleDifficultyChange}
+						className={`
+							font-bold
+							${difficulty == "easy" && "bg-correct text-correct-foreground hover:bg-correct/75 hover:text-correct-foreground dark:hover:bg-correct/75 dark:hover:text-correct-foreground"}
+							${difficulty == "medium" && "bg-mispositioned text-mispositioned-foreground hover:bg-mispositioned/75 hover:text-mispositioned-foreground dark:hover:bg-mispositioned/75 dark:hover:text-mispositioned-foreground"}
+							${difficulty == "hard" && "bg-incorrect text-incorrect-foreground hover:bg-incorrect/75 hover:text-incorrect-foreground dark:hover:bg-incorrect/75 dark:hover:text-incorrect-foreground"}`
+						}
+					>
+						DIFICULDADE: {difficulty.toUpperCase()}
 					</Button>
-				</HowToPlayDialog>
-				<Button size="lg" variant="ghost"
-					onClick={handleDifficultyChange}
-					className={`font-bold px-1.5
-						${difficulty == "easy" && "bg-green-300"}
-						${difficulty == "medium" && "bg-yellow-300"}
-						${difficulty == "hard" && "bg-red-400 text-white"}`}
-				>
-					<p>DIFICULDADE:</p>
-					{difficulty.toUpperCase()}
-				</Button>
-				<div className="flex flex-row justify-between p-4 gap-4 w-[20%]">
-					<p>Highscore: {highscore}</p>
-					<p>Streak: {streak}</p>
+				</div>
+				<div className=" flex justify-end items-center flex-1">
+					<div className="flex justify-between px-2 gap-4 text-nowrap">
+						<span>Highscore: {highscore}</span>
+						<span>Streak: {streak}</span>
+					</div>
 				</div>
 			</div>
 			<div className=" flex flex-col items-center gap-2 w-full h-full">

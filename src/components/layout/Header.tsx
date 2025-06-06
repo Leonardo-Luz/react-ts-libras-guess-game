@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
-import { HelpCircleIcon, SettingsIcon } from "lucide-react"
+import { HelpCircleIcon } from "lucide-react"
 import AboutDialog from "../AboutDialog"
 
 export const Header = () => {
@@ -8,7 +8,7 @@ export const Header = () => {
 		<header className="py-3">
 			<div className="flex justify-between items-center gap-2 mx-auto container max-w-(--breakpoint-xl)">
 				<div className=" flex justify-start flex-1 align-middle">
-					<img src="/icon.png" className="h-9" />
+					<img src="/icon.png" className="h-9 dark:invert" />
 					<Button
 						size="sm"
 						variant="link"
@@ -27,13 +27,6 @@ export const Header = () => {
 							<HelpCircleIcon className="size-5" />
 						</Button>
 					</AboutDialog>
-					<Button
-						size="icon"
-						variant="ghost"
-						disabled
-					>
-						<SettingsIcon className="size-5" />
-					</Button>
 				</div>
 			</div>
 		</header>
