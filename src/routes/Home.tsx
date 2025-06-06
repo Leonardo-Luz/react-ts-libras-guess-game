@@ -170,7 +170,7 @@ export const Home = () => {
 						}
 						<TileRow>
 							{Array.from({ length: target.length }, (_, i) => word.split("")[i] ?? undefined).map((letter, index) => (
-								<Tile key={`${letter}${index}`} letter={letter} className={cn(index === word.length && "border-b-8")} />
+								<Tile key={`${letter}${index}`} letter={letter} className={cn(index === word.length && "border-b-10 rounded-2xl")} />
 							))}
 						</TileRow>
 						{Array.from({ length: QTY_TRIES - tries.length - 1 }).map((_, i) => (
