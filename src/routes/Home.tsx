@@ -102,6 +102,7 @@ export const Home = () => {
 		setTarget(getRandomWord(difficulty))
 
 		setDifficulty(localStorage.getItem("difficulty") as "easy" | "medium" | "hard" ?? "easy")
+		setHighscore(parseInt(localStorage.getItem("highscore") ?? "0"))
 	}, [])
 
 	useEffect(() => {
@@ -116,8 +117,10 @@ export const Home = () => {
 	}, [difficulty])
 
 	useEffect(() => {
-		if (streak > highscore)
+		if (streak > highscore) {
 			setHighscore(streak)
+			localStorage.setItem("highscore", streak.toString())
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [streak])
 
@@ -153,8 +156,8 @@ export const Home = () => {
 				</div>
 				<div className=" flex justify-end items-center flex-1">
 					<div className="flex justify-between px-2 gap-4 text-nowrap">
-						<span>Highscore: {highscore}</span>
-						<span>Streak: {streak}</span>
+						<span>{highscore > 0 && `Maior Pontuação ${highscore}`}</span>
+						<span>{streak > 0 && `Sequência ${streak}`}</span>
 					</div>
 				</div>
 			</div>
