@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { HelpCircleIcon, SunMoonIcon, BookIcon } from "lucide-react"
 import AboutDialog from "../AboutDialog"
-import DictionaryDialog from "@/components/DictionaryDialog"
+import AlphabetDialog from "@/components/AlphabetDialog"
 
 export const Header = () => {
 	return (
@@ -20,14 +20,14 @@ export const Header = () => {
 					</Button>
 				</div>
 				<div className=" flex justify-end items-center gap-1 flex-1">
-					<DictionaryDialog>
+					<AlphabetDialog>
 						<Button
 							size="icon"
 							variant="ghost"
 						>
 							<BookIcon className="size-5" />
 						</Button>
-					</DictionaryDialog>
+					</AlphabetDialog>
 					<Button
 						size="icon"
 						variant="ghost"
