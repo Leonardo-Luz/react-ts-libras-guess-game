@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
-import { HelpCircleIcon, SunMoonIcon, BookIcon } from "lucide-react"
+import { HelpCircleIcon, SunMoonIcon, BookAIcon } from "lucide-react"
 import AboutDialog from "../AboutDialog"
 import AlphabetDialog from "@/components/AlphabetDialog"
 
@@ -25,7 +25,7 @@ export const Header = () => {
 							size="icon"
 							variant="ghost"
 						>
-							<BookIcon className="size-5" />
+							<BookAIcon className="size-5" />
 						</Button>
 					</AlphabetDialog>
 					<Button
