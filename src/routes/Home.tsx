@@ -128,10 +128,10 @@ export const Home = () => {
 		<div
 			ref={inputRef}
 			onKeyDown={TypeHandler} tabIndex={0}
-			className="flex flex-col align-top justify-top w-full h-full gap-4 outline-0 "
+			className="flex flex-col align-top justify-top w-full h-full gap-2 outline-0 "
 		>
-			<div className="flex justify-between items-center py-4 w-full">
-				<div className=" flex justify-start items-center flex-1">
+			<div className="flex justify-between items-center flex-wrap gap-y-4 py-4 w-full">
+				<div className=" flex justify-start items-center flex-1 order-1">
 					<HowToPlayDialog>
 						<Button size="sm" variant="ghost" className="px-2">
 							<span className="inline-flex justify-center items-center rounded-full size-5.5 text-base font-bold bg-primary text-primary-foreground">i</span>
@@ -139,7 +139,7 @@ export const Home = () => {
 						</Button>
 					</HowToPlayDialog>
 				</div>
-				<div className=" flex justify-center items-center flex-1">
+				<div className=" flex justify-end items-center flex-1 order-2 md:order-3">
 					<Button
 						size="sm"
 						variant="ghost"
@@ -154,14 +154,14 @@ export const Home = () => {
 						DIFICULDADE: {difficulty.toUpperCase()}
 					</Button>
 				</div>
-				<div className=" flex justify-end items-center flex-1">
+				<div className=" flex justify-center items-center w-full order-3 md:flex-1 md:w-auto md:order-2">
 					<div className="flex justify-between px-2 gap-4 text-nowrap">
 						<span>{highscore > 0 && `Maior Pontuação ${highscore}`}</span>
 						<span>{streak > 0 && `Sequência ${streak}`}</span>
 					</div>
 				</div>
 			</div>
-			<div className=" flex flex-col items-center gap-2 w-full h-full">
+			<div className=" flex flex-col items-center gap-2 w-full">
 				{target && (
 					<>
 						<TileRow>
@@ -203,7 +203,7 @@ export const Home = () => {
 					</>
 				)}
 			</div>
-			<div className="flex flex-col gap-1 mx-auto pb-20 max-w-[650px] w-full">
+			<div className="flex flex-col gap-1 mt-auto mx-auto max-w-[650px] pb-10 w-full">
 				<div className="flex justify-center gap-1">
 					{["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"].map((letter) => (
 						<KeyboardKey
