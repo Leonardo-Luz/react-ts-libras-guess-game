@@ -154,10 +154,21 @@ export const Home = () => {
 						DIFICULDADE: {difficulty.toUpperCase()}
 					</Button>
 				</div>
-				<div className=" flex justify-center items-center w-full order-3 md:flex-1 md:w-auto md:order-2">
-					<div className="flex justify-between px-2 gap-4 text-nowrap">
-						<span>{highscore > 0 && `Maior Pontuação ${highscore}`}</span>
-						<span>{streak > 0 && `Sequência ${streak}`}</span>
+				<div className="flex justify-center items-center w-full order-3 md:flex-1 md:w-auto md:order-2">
+					<div
+						className={cn(
+							"flex justify-center px-2 gap-4 text-nowrap w-full",
+							highscore > 0 && streak > 0 && "justify-between md:justify-center"
+						)}
+					>
+						{
+							highscore > 0 &&
+							<span className="text-left">{highscore > 0 && `Maior Pontuação ${highscore}`}</span>
+						}
+						{
+							streak > 0 &&
+							<span className="text-right">{streak > 0 && `Sequência ${streak}`}</span>
+						}
 					</div>
 				</div>
 			</div>
@@ -261,6 +272,6 @@ export const Home = () => {
 					if (!open) ExitHandler();
 				}}
 			/>
-		</div>
+		</div >
 	)
 }
