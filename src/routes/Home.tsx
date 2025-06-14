@@ -102,15 +102,28 @@ export const Home = () => {
 		setTarget(getRandomWord(difficulty))
 
 		setDifficulty(localStorage.getItem("difficulty") as "easy" | "medium" | "hard" ?? "easy")
-		setHighscore(parseInt(localStorage.getItem("highscore") ?? "0"))
 	}, [])
+
+	useEffect(() => {
+		switch (difficulty) {
+			case "easy":
+				setHighscore(parseInt(localStorage.getItem(`highscore_${difficulty}`) ?? "0"))
+				break;
+			case "medium":
+				setHighscore(parseInt(localStorage.getItem(`highscore_${difficulty}`) ?? "0"))
+				break;
+			case "hard":
+				setHighscore(parseInt(localStorage.getItem(`highscore_${difficulty}`) ?? "0"))
+				break;
+		}
+	}, [difficulty])
 
 	useEffect(() => {
 		inputRef?.current?.focus();
 	}, [target])
 
 	useEffect(() => {
-		reset()
+		ExitHandler()
 		localStorage.setItem("difficulty", difficulty)
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -119,7 +132,7 @@ export const Home = () => {
 	useEffect(() => {
 		if (streak > highscore) {
 			setHighscore(streak)
-			localStorage.setItem("highscore", streak.toString())
+			localStorage.setItem(`highscore_${difficulty}`, streak.toString())
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [streak])
